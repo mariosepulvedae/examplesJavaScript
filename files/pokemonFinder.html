@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de pokemones</title>
+</head>
+<body id="body" style="text-align:center;">
+    <h2>Búsqueda de pokemones</h2>
+    <input type="text" id="texto" >
+    <button id="buscar" onclick="buscarPokemon()">Buscar</button>
+    <br>
+    <img id="pokemon" src="" >
+    <br>
+    <span id="Tipo"></span>
+    <br>
+    <span id="Habi" ></span>
+    <br>
+    <span id="Mov1" ></span>
+    <br>
+    <span id="Mov2" ></span>
+    <br>
+    <span id="Mov3" ></span>
+    <script>
+
+        async function buscarPokemon(){
+
+            let texto = document.getElementById("texto").value;
+            console.log(texto);
+            try{
+                const estado=await fetch(`https://pokeapi.co/api/v2/pokemon/${texto}`)
+
+                if(!estado.ok){
+                    document.getElementById("pokemon").src="";
+                    document.getElementById("pokemon").width=0;
+                    document.getElementById("pokemon").height=0;
+                    document.getElementById("Tipo").innerText="Pokemon no encontrado";
+                    document.getElementById("Habi").innerText="";
+                    document.getElementById("Mov1").innerText="";
+                    document.getElementById("Mov2").innerText="";
+                    document.getElementById("Mov3").innerText="";
+                    throw new Error('Pokemon no encontrado');
+                }
+                    const datos=await estado.json();
+                    console.log(datos);
+                    console.log(datos.species.name);
+                    console.log(datos.sprites.front_default);
+                    document.getElementById("pokemon").src=datos.sprites.front_default;
+                    document.getElementById("pokemon").width=200;
+                    document.getElementById("pokemon").height=200;
+                    document.getElementById("Tipo").innerText="Tipo: "+datos.types[0].type.name;
+                    document.getElementById("Habi").innerText="Habilidad: "+datos.abilities[0].ability.name;
+                    document.getElementById("Mov1").innerText="Movimiento 1:  "+datos.moves[0].move.name;
+                    document.getElementById("Mov2").innerText="Movimiento 2:  "+datos.moves[1].move.name;
+                    document.getElementById("Mov3").innerText="Movimiento 3:  "+datos.moves[2].move.name;
+
+            }catch(error){
+                console.error('Error:', error);
+            }
+
+        }
+    </script>
+    
+</body>
+</html>
