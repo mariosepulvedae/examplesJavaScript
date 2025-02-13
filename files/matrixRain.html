@@ -1,0 +1,116 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mover.css">
+    <title>'\u{30c2}'</title>
+ </head>
+ <body id="body" style="text-align:center;background-color: rgb(0, 0, 0);">
+
+    <span id="Tipo"></span>
+    <br>
+    <span id="Numero"></span>
+    <br>
+    <canvas width="200" height="500" id="recuadro" style="border:1px solid #000000;">Soy una caja</canvas>
+
+
+
+    <script>
+
+        function caracter(){
+
+            var num=["1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+            let numero=Math.floor(Math.random()*num.length +1)+1;
+            return num[numero];
+
+        }
+
+        function mover(){
+
+            var num=["4","5","6","7","8","9","A","B","C","D","E","F"];
+            let numero=Math.floor(Math.random()*num.length +1)+1;
+            return num[numero];
+        }
+
+        document.getElementById("Tipo").style.color="rgb(19,205,7)";
+        document.getElementById("Tipo").innerText='\u{30FF}';
+        document.getElementById("Tipo").style.fontSize="35px";
+        let i=2;
+        const pref="0x";
+        const primero="30";
+        var guia=4;
+        var veo;
+        
+ 
+
+            var intv=setInterval(()=>{
+                try{
+                    veo=pref+primero+String(guia)+caracter();
+                    document.getElementById("Tipo").innerText=String.fromCodePoint(veo);
+                    console.log(veo);
+                    console.log(String.fromCodePoint(veo));
+                    i=i+1;
+                    if(i==9){
+                        i=0;
+                        guia=guia+1;
+                    
+                    }else if(guia==9){
+                        clearInterval(intv);
+                    }
+                    }catch(e){
+                        console.log(e.message);
+                    }
+            },25);
+
+
+
+        
+
+        const caja= document.getElementById("recuadro");
+        const canvaR=caja.getContext('2d');
+        const w = caja.width = document.body.offsetWidth;
+        const h = caja.height = document.body.offsetHeight;
+        canvaR.fillStyle = '#000';
+        canvaR.fillRect(0, 0, w, h);
+
+        const cols = Math.floor(w / 20) + 1;
+        const ypos = Array(cols).fill(0);
+        console.log(ypos);
+
+
+        function matrix(){
+            canvaR.fillStyle='#0001';
+            canvaR.fillRect(0, 0, w, h);
+            canvaR.fillStyle = '#0f0';
+            canvaR.font = '15pt monospace';
+            var x;
+            var texto;
+            ypos.forEach((y,ind)=>{
+                veo=pref+primero+mover()+caracter();
+                try{
+                    texto=String.fromCodePoint(veo);
+                    x=ind*20;
+                    canvaR.fillText(texto, x, y);
+                    if (y > 100 + Math.random() * 10000){
+                        ypos[ind] = 0;
+                    }else{
+                        ypos[ind] = y + 20;
+                    }
+                }catch(e){
+                    console.log(e.message);
+                    texto='\u{30FF}';
+                }
+                
+                
+            });
+        }
+
+
+        setInterval(matrix,20);
+        //canvaR.fillText('\u{30C3}', 200, 40);
+        
+
+    </script>
+ </body>
+ </html>
